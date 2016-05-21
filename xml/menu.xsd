@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        targetNamespace="http://training.by/XML_XDS_DOM_Parser"
+        xmlns:tns="http://training.by/XML_XDS_DOM_Parser">
+
+    <element name="menu">
+        <complexType>
+            <sequence>
+                <element name="kind" type="tns:Kind" minOccurs="0" maxOccurs="unbounded"/>
+            </sequence>
+        </complexType>
+    </element>
+    
+    <complexType name="Kind">
+        <sequence>
+            <element name="kind-name" type="string"/>
+            <element name="kind-content" type="tns:KindContent"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="KindContent">
+        <sequence>
+            <element name="dish" type="tns:Dish" minOccurs="0" maxOccurs="unbounded"/>
+        </sequence>
+    </complexType>
+
+    <complexType name="Dish">
+        <sequence>
+            <element name="dish-photo" type="string"/>
+            <element name="dish-name" type="string"/>
+            <element name="dish-description" type="string"/>
+            <element name="dish-portion" type="string"/>
+            <element name="dish-price" type="string"/>
+        </sequence>
+    </complexType>
+
+</schema>
