@@ -1,11 +1,14 @@
 package by.epam.xml_xsd_dom_parser.my_dom_parser.implementations;
 
 import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Attribute;
+import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Element;
+import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Node;
 
 /**
  * Created by Владислав on 21.05.2016.
  */
 public class AttributeImp implements Attribute {
+    private Element ownerElement;
     private String name;
     private String value;
 
@@ -21,6 +24,11 @@ public class AttributeImp implements Attribute {
         return name;
     }
 
+    @Override
+    public Element getOwnerElement() {
+        return ownerElement;
+    }
+
     public void setName(String name) {
         this.name = name;
     }
@@ -31,6 +39,11 @@ public class AttributeImp implements Attribute {
 
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public boolean isId() {
+        return name.equals("ID");
     }
 
     @Override
@@ -58,5 +71,30 @@ public class AttributeImp implements Attribute {
                 "name='" + name + '\'' +
                 ", value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public short getNodeType() {
+        return 2;
+    }
+
+    @Override
+    public String getNodeValue() {
+        return value;
+    }
+
+    @Override
+    public Node getParentNode() {
+        return ownerElement;
+    }
+
+    @Override
+    public Node getFirstChild() {
+        return null;
+    }
+
+    @Override
+    public Node getLastChild() {
+        return null;
     }
 }

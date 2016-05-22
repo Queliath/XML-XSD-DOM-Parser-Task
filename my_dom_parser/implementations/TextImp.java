@@ -1,5 +1,6 @@
 package by.epam.xml_xsd_dom_parser.my_dom_parser.implementations;
 
+import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Node;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Text;
 
 /**
@@ -44,5 +45,40 @@ public class TextImp implements Text {
         return "TextImp{" +
                 "value='" + value + '\'' +
                 '}';
+    }
+
+    @Override
+    public String getWholeText() {
+        return value;
+    }
+
+    @Override
+    public void replaceWholeText(String content) {
+        value = content;
+    }
+
+    @Override
+    public short getNodeType() {
+        return 3;
+    }
+
+    @Override
+    public String getNodeValue() {
+        return value;
+    }
+
+    @Override
+    public Node getParentNode() {
+        return null;
+    }
+
+    @Override
+    public Node getFirstChild() {
+        return null;
+    }
+
+    @Override
+    public Node getLastChild() {
+        return null;
     }
 }

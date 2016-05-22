@@ -1,8 +1,6 @@
 package by.epam.xml_xsd_dom_parser.my_dom_parser.implementations;
 
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Attribute;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Element;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Text;
+import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,65 @@ public class ElementImp implements Element {
 
     public String getTagName() {
         return tagName;
+    }
+
+    @Override
+    public boolean hasAttribute() {
+        return !attributes.isEmpty();
+    }
+
+    @Override
+    public String getAttribute(String name) {
+        for(Attribute attribute : attributes){
+            if(attribute.getName().equals(name))
+                return attribute.getValue();
+        }
+
+        return null;
+    }
+
+    @Override
+    public Attribute getAttributeNode(String name) {
+        for(Attribute attribute : attributes){
+            if(attribute.getName().equals(name))
+                return attribute;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void setAttribute(String name, String value) {
+        for(Attribute attribute : attributes){
+            if(attribute.getName().equals(name))
+                attribute.setValue(value);
+        }
+    }
+
+    @Override
+    public void removeAttribute(String name) {
+        for(Attribute attribute : attributes){
+            if(attribute.getName().equals(name))
+                attributes.remove(attribute);
+        }
+    }
+
+    @Override
+    public List<Element> getElementsByTagName(String name) {
+        List<Element> searchingElements = new ArrayList<>();
+
+        for(Element element : childElements) {
+            if (element.getTagName().equals(name))
+                searchingElements.add(element);
+
+            searchingElements.addAll(element.getElementsByTagName(name));
+        }
+        return searchingElements;
+    }
+
+    @Override
+    public String getInnerText() {
+        return textContent.getWholeText();
     }
 
     public void setTagName(String tagName) {
@@ -108,5 +165,30 @@ public class ElementImp implements Element {
                 ", childElements=" + childElements +
                 ", textContent=" + textContent +
                 '}';
+    }
+
+    @Override
+    public short getNodeType() {
+        return 1;
+    }
+
+    @Override
+    public String getNodeValue() {
+        return null;
+    }
+
+    @Override
+    public Node getParentNode() {
+        return parentElement;
+    }
+
+    @Override
+    public Node getFirstChild() {
+        return childElements.get(0);
+    }
+
+    @Override
+    public Node getLastChild() {
+        return childElements.get(childElements.size() - 1);
     }
 }

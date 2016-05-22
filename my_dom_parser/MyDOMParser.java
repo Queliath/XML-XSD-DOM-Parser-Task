@@ -1,6 +1,7 @@
 package by.epam.xml_xsd_dom_parser.my_dom_parser;
 
 import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.AttributeImp;
+import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.DocumentImp;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.ElementImp;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.TextImp;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Attribute;
@@ -17,18 +18,10 @@ import java.util.ArrayList;
  * Created by Владислав on 21.05.2016.
  */
 public class MyDOMParser {
-    private static final char tagOpen = '<';
-    private static final char tagClose = '>';
-
-    private static int tagReading = 0;
-    private static int attributeReading = 1;
-    private static int textReading = 2;
-
     private FileReader fileReader;
     private char currentSymbol;
-    private int readingType = 0;
 
-    private ElementImp rootElement;
+    private DocumentImp documentImp;
 
     public MyDOMParser() {
     }
@@ -43,18 +36,19 @@ public class MyDOMParser {
         }
     }
 
-    public ElementImp parse(){
+    public DocumentImp parse(){
         while (readSymbol() != 0) {
             readTag(null);
         }
 
-        return rootElement;
+        return documentImp;
     }
 
     private void readTag(ElementImp parentElement) {
         ElementImp element = new ElementImp();
         boolean closedTag = false;
         boolean singleTag = false;
+        boolean declaration = false;
         StringBuilder tagName = new StringBuilder();
         StringBuilder textBetweenTags = new StringBuilder();
 
@@ -84,16 +78,18 @@ public class MyDOMParser {
 
         element.setTagName(tagName.toString());
 
-        System.out.println("Тэг " + tagName);
+        if(tagName.length() != 0)
+            if(tagName.charAt(0) == '?' && tagName.charAt(tagName.length() - 1) == '?')
+                declaration = true;
 
-        if(!closedTag){
+        if(!closedTag && !declaration){
             element.setParentElement(parentElement);
             if(parentElement != null)
                 parentElement.addChildElement(element);
             else
-                rootElement = element;
+                documentImp = new DocumentImp(element);
         }
-        if(!closedTag && !singleTag) {
+        if(!closedTag && !singleTag && !declaration) {
             readTag(element);
         }
         else if(!closedTag)
