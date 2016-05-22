@@ -4,15 +4,10 @@ import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.AttributeImp;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.DocumentImp;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.ElementImp;
 import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.TextImp;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Attribute;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Document;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Element;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 
 /**
  * Created by Владислав on 21.05.2016.

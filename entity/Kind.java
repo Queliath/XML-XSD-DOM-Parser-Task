@@ -1,5 +1,6 @@
-package by.epam_training_center.xml_xsd_and_dom_parser.entity;
+package by.epam.xml_xsd_dom_parser.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,6 +11,7 @@ public class Kind {
     private List<Dish> dishes;
 
     public Kind() {
+        dishes = new ArrayList<>();
     }
 
     public Kind(String name) {
@@ -37,6 +39,10 @@ public class Kind {
         this.dishes = dishes;
     }
 
+    public void addDish(Dish dish) {
+        this.dishes.add(dish);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,9 +64,11 @@ public class Kind {
 
     @Override
     public String toString() {
-        return "Kind{" +
-                "name='" + name + '\'' +
-                ", dishes=" + dishes +
-                '}';
+        String resultString = "\n" + name + "\n";
+        for(Dish dish : dishes) {
+            resultString = resultString + dish;
+        }
+
+        return resultString;
     }
 }

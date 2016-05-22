@@ -34,9 +34,9 @@
             <dish>
                 <dish-photo>julien.jgp</dish-photo>
                 <dish-name>Жульен</dish-name>
-                <dish-description>1. с курицей 2. с грибами</dish-description>
+                <dish-description>с курицей</dish-description>
                 <dish-portion>120/1</dish-portion>
-                <dish-price>1.145 2.155</dish-price>
+                <dish-price>145</dish-price>
             </dish>
             <dish>
                 <dish-photo>escargo.jgp</dish-photo>

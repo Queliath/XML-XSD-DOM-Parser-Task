@@ -30,8 +30,14 @@
             <element name="dish-name" type="string"/>
             <element name="dish-description" type="string"/>
             <element name="dish-portion" type="string"/>
-            <element name="dish-price" type="string"/>
+            <element name="dish-price" type="integer"/>
         </sequence>
     </complexType>
+    
+    <simpleType name="fileName">
+        <restriction base="string">
+            <pattern value=""/>
+        </restriction>
+    </simpleType>
 
 </schema>

@@ -1,5 +1,6 @@
-package by.epam_training_center.xml_xsd_and_dom_parser.entity;
+package by.epam.xml_xsd_dom_parser.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,6 +10,7 @@ public class Menu {
     private List<Kind> kinds;
 
     public Menu() {
+        kinds = new ArrayList<>();
     }
 
     public Menu(List<Kind> kinds) {
@@ -21,6 +23,10 @@ public class Menu {
 
     public void setKinds(List<Kind> kinds) {
         this.kinds = kinds;
+    }
+
+    public void addKind(Kind kind) {
+        this.kinds.add(kind);
     }
 
     @Override
@@ -41,8 +47,10 @@ public class Menu {
 
     @Override
     public String toString() {
-        return "Menu{" +
-                "kinds=" + kinds +
-                '}';
+        String resultString = "Меню:\n";
+        for(Kind kind : kinds) {
+            resultString = resultString + kind;
+        }
+        return resultString;
     }
 }

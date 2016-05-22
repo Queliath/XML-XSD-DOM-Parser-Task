@@ -1,4 +1,4 @@
-package by.epam_training_center.xml_xsd_and_dom_parser.entity;
+package by.epam.xml_xsd_dom_parser.entity;
 
 /**
  * Created by Владислав on 21.05.2016.
@@ -88,12 +88,6 @@ public class Dish {
 
     @Override
     public String toString() {
-        return "Dish{" +
-                "photo='" + photo + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", portion='" + portion + '\'' +
-                ", price=" + price +
-                '}';
+        return "Фото: " + photo + " Название: " + name + " Описание: " + description + " Порция: " + portion + " Цена: " + price + "\n";
     }
 }
