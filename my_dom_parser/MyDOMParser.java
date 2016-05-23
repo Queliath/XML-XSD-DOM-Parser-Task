@@ -32,7 +32,9 @@ public class MyDOMParser {
     }
 
     public DocumentImp parse(){
+        //Пока не достигнут конец файла происходит рекурсивный вызов функции readTag
         while (readSymbol() != 0) {
+            //null означает что у первого считываемого элемента нет родителя
             readTag(null);
         }
 
@@ -47,25 +49,34 @@ public class MyDOMParser {
         StringBuilder tagName = new StringBuilder();
         StringBuilder textBetweenTags = new StringBuilder();
 
+        //До тех пор пока не встретится начало тега считываемый текст заносится в переменную textBetweenTags
         while (currentSymbol != '<' && currentSymbol != 0)
             textBetweenTags.append(readSymbol());
+        //Если достигнут конец файла выполнение функции прекращается
         if(currentSymbol == 0)
             return;
 
+        //Считываение содержимого тега до тех пор пока не встретится закрывающий символ
         while (readSymbol() != '>') {
+
             if(currentSymbol == '/'){
+                //Если символ / встречем в самом начале тега, то этог тег закрывающий
                 if(tagName.length() == 0)
                     closedTag = true;
+                //Если нет, то это одиночный пустой тег
                 else
                     singleTag = true;
                 break;
             }
+            //Если встречем пробел внутри тега начинается считывание атрибута тега
             if(currentSymbol == ' ')
                 readAttribute(element);
+            //Во всех остальных случаях символ заносится в имя тега
             else
                 tagName.append(currentSymbol);
         }
 
+        //Если имеется родительский элемент то считанный текст заносится в его внутренний
         if(parentElement != null){
             textBetweenTags.deleteCharAt(textBetweenTags.length() - 1);
             parentElement.setTextContent(new TextImp(textBetweenTags.toString()));
@@ -73,10 +84,12 @@ public class MyDOMParser {
 
         element.setTagName(tagName.toString());
 
+        //Проверка является ли считанный тег объявлением
         if(tagName.length() != 0)
             if(tagName.charAt(0) == '?' && tagName.charAt(tagName.length() - 1) == '?')
                 declaration = true;
 
+        //Если тег не закрывающий и не объявление то он заносится в дерево DOM
         if(!closedTag && !declaration){
             element.setParentElement(parentElement);
             if(parentElement != null)
@@ -84,13 +97,20 @@ public class MyDOMParser {
             else
                 documentImp = new DocumentImp(element);
         }
+
+        //Рекурсивный вызов функции в зависимости от типа тега
         if(!closedTag && !singleTag && !declaration) {
+            //Далее считываемые теги будут восприниматься как дочерние элементы
             readTag(element);
         }
+        //Если тег одиночный или это объявление то родительский элемент остается тем же
         else if(!closedTag)
             readTag(parentElement);
+        //Если это закрывающий тег то далее считываемые теги будет дочерними для родителя родителя
+        //(это происхоидт потому что закрывающий тег воспринимается как дочерний для открывающего)
         else
             readTag((ElementImp) parentElement.getParentElement());
+
     }
 
     private void readAttribute(ElementImp element) {
@@ -98,14 +118,18 @@ public class MyDOMParser {
         StringBuilder attributeName = new StringBuilder();
         StringBuilder attributeValue = new StringBuilder();
 
+        //До тех пор пока не встретится символ равно, считываемые символы воспринимаются как имя тега
         while (readSymbol() != '=')
             attributeName.append(currentSymbol);
+        //Считывается лишний символ (")
         readSymbol();
+        //До тех пор пока не встретится символ ", считываемые символы воспринимаются как значение тега
         while (readSymbol() != '"')
             attributeValue.append(currentSymbol);
 
         attribute.setName(attributeName.toString());
         attribute.setValue(attributeValue.toString());
+        //Атрибут добавляется в дерево DOM
         element.addAttribute(attribute);
     }
 
