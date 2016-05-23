@@ -47,10 +47,8 @@ public class Menu {
 
     @Override
     public String toString() {
-        String resultString = "Меню:\n";
-        for(Kind kind : kinds) {
-            resultString = resultString + kind;
-        }
-        return resultString;
+        return "Menu{" +
+                "kinds=" + kinds +
+                '}';
     }
 }

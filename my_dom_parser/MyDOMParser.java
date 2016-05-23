@@ -13,6 +13,15 @@ import java.io.IOException;
  * Created by Владислав on 21.05.2016.
  */
 public class MyDOMParser {
+
+    private final static char tagStart = '<';
+    private final static char tagEnd = '>';
+    private final static char tagClose = '/';
+    private final static char quotes = '"';
+    private final static char space = ' ';
+    private final static char equally = '=';
+    private final static char question = '?';
+
     private FileReader fileReader;
     private char currentSymbol;
 
@@ -41,6 +50,22 @@ public class MyDOMParser {
         return documentImp;
     }
 
+    private char readSymbol() {
+        int readSymbol = 0;
+        try {
+            readSymbol = fileReader.read();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if(readSymbol != -1)
+            currentSymbol = (char)readSymbol;
+        else
+            currentSymbol = 0;
+
+        return currentSymbol;
+    }
+
     private void readTag(ElementImp parentElement) {
         ElementImp element = new ElementImp();
         boolean closedTag = false;
@@ -50,16 +75,16 @@ public class MyDOMParser {
         StringBuilder textBetweenTags = new StringBuilder();
 
         //До тех пор пока не встретится начало тега считываемый текст заносится в переменную textBetweenTags
-        while (currentSymbol != '<' && currentSymbol != 0)
+        while (currentSymbol != tagStart && currentSymbol != 0)
             textBetweenTags.append(readSymbol());
         //Если достигнут конец файла выполнение функции прекращается
         if(currentSymbol == 0)
             return;
 
         //Считываение содержимого тега до тех пор пока не встретится закрывающий символ
-        while (readSymbol() != '>') {
+        while (readSymbol() != tagEnd) {
 
-            if(currentSymbol == '/'){
+            if(currentSymbol == tagClose){
                 //Если символ / встречем в самом начале тега, то этог тег закрывающий
                 if(tagName.length() == 0)
                     closedTag = true;
@@ -69,7 +94,7 @@ public class MyDOMParser {
                 break;
             }
             //Если встречем пробел внутри тега начинается считывание атрибута тега
-            if(currentSymbol == ' ')
+            if(currentSymbol == space)
                 readAttribute(element);
             //Во всех остальных случаях символ заносится в имя тега
             else
@@ -86,7 +111,7 @@ public class MyDOMParser {
 
         //Проверка является ли считанный тег объявлением
         if(tagName.length() != 0)
-            if(tagName.charAt(0) == '?' && tagName.charAt(tagName.length() - 1) == '?')
+            if(tagName.charAt(0) == question && tagName.charAt(tagName.length() - 1) == question)
                 declaration = true;
 
         //Если тег не закрывающий и не объявление то он заносится в дерево DOM
@@ -119,12 +144,12 @@ public class MyDOMParser {
         StringBuilder attributeValue = new StringBuilder();
 
         //До тех пор пока не встретится символ равно, считываемые символы воспринимаются как имя тега
-        while (readSymbol() != '=')
+        while (readSymbol() != equally)
             attributeName.append(currentSymbol);
         //Считывается лишний символ (")
         readSymbol();
         //До тех пор пока не встретится символ ", считываемые символы воспринимаются как значение тега
-        while (readSymbol() != '"')
+        while (readSymbol() != quotes)
             attributeValue.append(currentSymbol);
 
         attribute.setName(attributeName.toString());
@@ -133,19 +158,4 @@ public class MyDOMParser {
         element.addAttribute(attribute);
     }
 
-    private char readSymbol() {
-        int readSymbol = 0;
-        try {
-            readSymbol = fileReader.read();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        if(readSymbol != -1)
-            currentSymbol = (char)readSymbol;
-        else
-            currentSymbol = 0;
-
-        return currentSymbol;
-    }
 }

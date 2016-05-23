@@ -88,6 +88,12 @@ public class Dish {
 
     @Override
     public String toString() {
-        return "Фото: " + photo + " Название: " + name + " Описание: " + description + " Порция: " + portion + " Цена: " + price + "\n";
+        return "Dish{" +
+                "photo='" + photo + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", portion='" + portion + '\'' +
+                ", price=" + price +
+                '}';
     }
 }

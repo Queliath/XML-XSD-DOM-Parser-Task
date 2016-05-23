@@ -42,7 +42,13 @@ public class Main {
             }
         }
 
-        System.out.println(menu);
+        System.out.println("Меню:\n");
+        for(Kind kind : menu.getKinds()) {
+            System.out.println(kind.getName());
+            for(Dish dish : kind.getDishes()) {
+                System.out.println("Фото: " + dish.getPhoto() + " Название: " + dish.getName() + " Описание: " + dish.getDescription() + " Порция: " + dish.getPortion() + " Цена: " + dish.getPrice());
+            }
+        }
     }
 
 }
