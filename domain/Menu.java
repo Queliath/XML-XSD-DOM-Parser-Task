@@ -1,4 +1,4 @@
-package by.epam.xml_xsd_dom_parser.entity;
+package by.epam.parsers.domain;
 
 import java.util.ArrayList;
 import java.util.List;

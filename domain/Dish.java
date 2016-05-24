@@ -1,4 +1,4 @@
-package by.epam.xml_xsd_dom_parser.entity;
+package by.epam.parsers.domain;
 
 /**
  * Created by Владислав on 21.05.2016.

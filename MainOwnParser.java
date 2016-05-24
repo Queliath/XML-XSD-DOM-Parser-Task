@@ -1,27 +1,31 @@
-package by.epam.xml_xsd_dom_parser;
+package by.epam.parsers;
 
-import by.epam.xml_xsd_dom_parser.entity.Dish;
-import by.epam.xml_xsd_dom_parser.entity.Kind;
-import by.epam.xml_xsd_dom_parser.entity.Menu;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.MyDOMParser;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Document;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Element;
+import by.epam.parsers.domain.Dish;
+import by.epam.parsers.domain.Kind;
+import by.epam.parsers.domain.Menu;
+import by.epam.parsers.own_parser.factory.DOMParserFactory;
+import by.epam.parsers.own_parser.service.IDOMParser;
+import by.epam.parsers.own_parser.domain.Document;
+import by.epam.parsers.own_parser.domain.Element;
 
 import java.util.List;
 
 /**
  * Created by Владислав on 21.05.2016.
  */
-public class Main {
+public class MainOwnParser {
 
-    private static final String xmlFileURI = "src\\by\\epam\\xml_xsd_dom_parser\\xml\\menu.xml";
+    private static final String xmlFileURI = "src\\by\\epam\\parsers\\xml\\menu.xml";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception{
 
         Menu menu = new Menu();
 
-        MyDOMParser myDOMParser = new MyDOMParser(xmlFileURI);
-        Document document = myDOMParser.parse();
+        DOMParserFactory domParserFactory = DOMParserFactory.getInstance();
+        IDOMParser domParser = domParserFactory.getDOMParser();
+        domParser.setXMLFile(xmlFileURI);
+        Document document = domParser.parse();
+
         Element menuElement = document.getDocumentElement();
 
         List<Element> kindElements = menuElement.getElementsByTagName("kind");

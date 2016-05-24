@@ -1,4 +1,4 @@
-package by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces;
+package by.epam.parsers.own_parser.domain;
 
 import java.util.List;
 

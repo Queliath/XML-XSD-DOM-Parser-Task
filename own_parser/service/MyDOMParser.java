@@ -1,9 +1,11 @@
-package by.epam.xml_xsd_dom_parser.my_dom_parser;
+package by.epam.parsers.own_parser.service;
 
-import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.AttributeImp;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.DocumentImp;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.ElementImp;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.implementations.TextImp;
+import by.epam.parsers.own_parser.domain.AttributeImp;
+import by.epam.parsers.own_parser.domain.DocumentImp;
+import by.epam.parsers.own_parser.domain.ElementImp;
+import by.epam.parsers.own_parser.domain.TextImp;
+import by.epam.parsers.own_parser.exception.NoFileException;
+import org.w3c.dom.Element;
 
 import java.io.File;
 import java.io.FileReader;
@@ -12,7 +14,7 @@ import java.io.IOException;
 /**
  * Created by Владислав on 21.05.2016.
  */
-public class MyDOMParser {
+public class MyDOMParser implements IDOMParser{
 
     private final static char tagStart = '<';
     private final static char tagEnd = '>';
@@ -30,7 +32,7 @@ public class MyDOMParser {
     public MyDOMParser() {
     }
 
-    public MyDOMParser(String xmlFileURI) {
+    public void setXMLFile(String xmlFileURI) {
         File xmlFile = new File(xmlFileURI);
         try
         {
@@ -40,8 +42,12 @@ public class MyDOMParser {
         }
     }
 
-    public DocumentImp parse(){
+    public DocumentImp parse() throws NoFileException{
+        if(fileReader == null)
+            throw new NoFileException();
+
         //Пока не достигнут конец файла происходит рекурсивный вызов функции readTag
+        //(предпочтение отдано рекурсивному подходу вместо итерационного т.к. в процессе считывания xml происходит построение DOM дерева
         while (readSymbol() != 0) {
             //null означает что у первого считываемого элемента нет родителя
             readTag(null);
@@ -68,15 +74,15 @@ public class MyDOMParser {
 
     private void readTag(ElementImp parentElement) {
         ElementImp element = new ElementImp();
+
         boolean closedTag = false;
         boolean singleTag = false;
         boolean declaration = false;
+
         StringBuilder tagName = new StringBuilder();
-        StringBuilder textBetweenTags = new StringBuilder();
 
         //До тех пор пока не встретится начало тега считываемый текст заносится в переменную textBetweenTags
-        while (currentSymbol != tagStart && currentSymbol != 0)
-            textBetweenTags.append(readSymbol());
+        String textBetweenTags = readText();
         //Если достигнут конец файла выполнение функции прекращается
         if(currentSymbol == 0)
             return;
@@ -101,21 +107,19 @@ public class MyDOMParser {
                 tagName.append(currentSymbol);
         }
 
-        //Если имеется родительский элемент то считанный текст заносится в его внутренний
-        if(parentElement != null){
-            textBetweenTags.deleteCharAt(textBetweenTags.length() - 1);
-            parentElement.setTextContent(new TextImp(textBetweenTags.toString()));
-        }
-
-        element.setTagName(tagName.toString());
-
         //Проверка является ли считанный тег объявлением
         if(tagName.length() != 0)
             if(tagName.charAt(0) == question && tagName.charAt(tagName.length() - 1) == question)
                 declaration = true;
 
+        //Если это закрывающий тег то считанный текст заносится в содержимое элемента
+        if(closedTag){
+            parentElement.setTextContent(new TextImp(textBetweenTags.toString()));
+        }
+
         //Если тег не закрывающий и не объявление то он заносится в дерево DOM
         if(!closedTag && !declaration){
+            element.setTagName(tagName.toString());
             element.setParentElement(parentElement);
             if(parentElement != null)
                 parentElement.addChildElement(element);
@@ -136,6 +140,18 @@ public class MyDOMParser {
         else
             readTag((ElementImp) parentElement.getParentElement());
 
+    }
+
+    private String readText() {
+        StringBuilder textBetweenTags = new StringBuilder();
+
+        while (currentSymbol != tagStart && currentSymbol != 0)
+            textBetweenTags.append(readSymbol());
+
+        if(textBetweenTags.length() != 0)
+            textBetweenTags.deleteCharAt(textBetweenTags.length() - 1);
+
+        return textBetweenTags.toString();
     }
 
     private void readAttribute(ElementImp element) {

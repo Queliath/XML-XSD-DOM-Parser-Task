@@ -1,8 +1,8 @@
-package by.epam.xml_xsd_dom_parser;
+package by.epam.parsers;
 
-import by.epam.xml_xsd_dom_parser.entity.Dish;
-import by.epam.xml_xsd_dom_parser.entity.Kind;
-import by.epam.xml_xsd_dom_parser.entity.Menu;
+import by.epam.parsers.domain.Dish;
+import by.epam.parsers.domain.Kind;
+import by.epam.parsers.domain.Menu;
 import org.w3c.dom.Element;
 import org.w3c.dom.Document;
 import org.w3c.dom.NodeList;
@@ -16,9 +16,9 @@ import java.io.IOException;
 /**
  * Created by Владислав on 22.05.2016.
  */
-public class MainW3C {
+public class MainDOM {
 
-    private static final String xmlFileURI = "src\\by\\epam\\xml_xsd_dom_parser\\xml\\menu.xml";
+    private static final String xmlFileURI = "src\\by\\epam\\parsers\\xml\\menu.xml";
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
 

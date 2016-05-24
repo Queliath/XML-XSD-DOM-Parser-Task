@@ -1,8 +1,4 @@
-package by.epam.xml_xsd_dom_parser.my_dom_parser.implementations;
-
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Attribute;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Element;
-import by.epam.xml_xsd_dom_parser.my_dom_parser.interfaces.Node;
+package by.epam.parsers.own_parser.domain;
 
 /**
  * Created by Владислав on 21.05.2016.
