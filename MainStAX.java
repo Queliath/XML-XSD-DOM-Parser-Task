@@ -15,7 +15,7 @@ import java.io.FileNotFoundException;
 /**
  * Created by Владислав on 24.05.2016.
  */
-public class MainStAX {
+public class MainStAX implements MenuTagNames{
 
     private static final String xmlFileURI = "src\\by\\epam\\parsers\\xml\\menu.xml";
 
@@ -47,13 +47,13 @@ public class MainStAX {
 
                 case XMLStreamConstants.START_ELEMENT:
                     switch (xmlStreamReader.getLocalName()) {
-                        case "menu":
+                        case menuTag:
                             menu = new Menu();
                             break;
-                        case "kind":
+                        case kindTag:
                             currentKind = new Kind();
                             break;
-                        case "dish":
+                        case dishTag:
                             currentDish = new Dish();
                             break;
                     }
@@ -61,28 +61,28 @@ public class MainStAX {
 
                 case XMLStreamConstants.END_ELEMENT:
                     switch (xmlStreamReader.getLocalName()) {
-                        case "kind":
+                        case kindTag:
                             menu.addKind(currentKind);
                             break;
-                        case "dish":
+                        case dishTag:
                             currentKind.addDish(currentDish);
                             break;
-                        case "kind-name":
+                        case kindNameTag:
                             currentKind.setName(text.toString());
                             break;
-                        case "dish-photo":
+                        case dishPhotoTag:
                             currentDish.setPhoto(text.toString());
                             break;
-                        case "dish-name":
+                        case dishNameTag:
                             currentDish.setName(text.toString());
                             break;
-                        case "dish-description":
+                        case dishDescriptionTag:
                             currentDish.setDescription(text.toString());
                             break;
-                        case "dish-portion":
+                        case dishPortionTag:
                             currentDish.setPortion(text.toString());
                             break;
-                        case "dish-price":
+                        case dishPriceTag:
                             currentDish.setPrice(Integer.parseInt(text.toString()));
                             break;
                     }

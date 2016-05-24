@@ -17,7 +17,7 @@ import java.io.IOException;
 /**
  * Created by Владислав on 24.05.2016.
  */
-public class MainSAX {
+public class MainSAX implements MenuTagNames{
 
     private static final String xmlFileURI = "src\\by\\epam\\parsers\\xml\\menu.xml";
 
@@ -51,13 +51,13 @@ public class MainSAX {
         @Override
         public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
             switch (localName) {
-                case "menu":
+                case menuTag:
                     menu = new Menu();
                     break;
-                case "kind":
+                case kindTag:
                     currentKind = new Kind();
                     break;
-                case "dish":
+                case dishTag:
                     currentDish = new Dish();
                     break;
             }
@@ -66,28 +66,28 @@ public class MainSAX {
         @Override
         public void endElement(String uri, String localName, String qName) throws SAXException {
             switch (localName) {
-                case "kind":
+                case kindTag:
                     menu.addKind(currentKind);
                     break;
-                case "dish":
+                case dishTag:
                     currentKind.addDish(currentDish);
                     break;
-                case "kind-name":
+                case kindNameTag:
                     currentKind.setName(text.toString());
                     break;
-                case "dish-photo":
+                case dishPhotoTag:
                     currentDish.setPhoto(text.toString());
                     break;
-                case "dish-name":
+                case dishNameTag:
                     currentDish.setName(text.toString());
                     break;
-                case "dish-description":
+                case dishDescriptionTag:
                     currentDish.setDescription(text.toString());
                     break;
-                case "dish-portion":
+                case dishPortionTag:
                     currentDish.setPortion(text.toString());
                     break;
-                case "dish-price":
+                case dishPriceTag:
                     currentDish.setPrice(Integer.parseInt(text.toString()));
                     break;
             }
